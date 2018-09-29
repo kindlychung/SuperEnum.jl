@@ -1,6 +1,6 @@
 module SuperEnum
 
-export superenum
+export @superenum
 
 macro superenum(enumname, vals...)
     expr = quote
