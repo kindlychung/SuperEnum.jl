@@ -1,3 +1,4 @@
 using SuperEnum
-@macroexpand SuperEnum.@superenum Vehical car truck
+expr = @macroexpand SuperEnum.@superenum Vehical car truck
+dump(expr)
 SuperEnum.@superenum Vehical car truck
