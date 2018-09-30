@@ -1,6 +1,6 @@
 # SuperEnum
 
-![](https://ci.appveyor.com/api/projects/status/github/kindlychung/SuperEnum.jl?branch=master&svg=true&retina=true)
+![https://ci.appveyor.com/project/kindlychung/superenum-jl](https://ci.appveyor.com/api/projects/status/github/kindlychung/SuperEnum.jl?branch=master&svg=true&retina=true)
 
 ## Julia enum made nicer
 
