@@ -1,6 +1,7 @@
-authors = ["Kaiyin Zhong <k.zhong@gemvision.io>"]
 name = "SuperEnum"
 uuid = "b4a8c538-c432-11e8-2106-471678c38ff2"
+authors = ["Kaiyin Zhong <k.zhong@gemvision.io>"]
 version = "0.1.0"
 
 [deps]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
