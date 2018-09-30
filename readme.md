@@ -1,5 +1,7 @@
 # SuperEnum
 
+![](https://ci.appveyor.com/api/projects/status/github/kindlychung/SuperEnum.jl?branch=master&svg=true&retina=true)
+
 ## Julia enum made nicer
 
 ## Usage
