@@ -7,15 +7,15 @@
 ## Usage
 
 ```julia
-@superenum Vehical plane train car truck
+@superenum Vehicle plane train car truck
 
-julia> Vehical.VehicalEnum
-Enum Main.Vehical.VehicalEnum:
+julia> Vehicle.VehicleEnum
+Enum Main.Vehicle.VehicleEnum:
 plane = 0
 train = 1
 car = 2
 truck = 3
 
-julia> Vehical.car
-car::VehicalEnum = 2
+julia> Vehicle.car
+car::VehicleEnum = 2
 ```
