@@ -48,12 +48,16 @@ apple::Fruit = 1
 julia> SuperEnum.@se Lang zh=>"中文" en=>"English" ja=>"日本语"
 WARNING: replacing module Lang.
 Main.Lang
+
 julia> string(Lang.zh)
 "中文"
+
 julia> string(Lang.en)
 "English"
+
 julia> string(Lang.ja)
 "日本语"
+
 julia> Lang.LangEnum
 Enum Main.Lang.LangEnum:
 zh = 0
@@ -123,11 +127,12 @@ macro se(T, syms...)
                 s = s.args[1]
                 str = string(s)
                 hasexpr = true
-            elseif (s.head == :call) && length(s.args) == 3 && s.args[1] == :(=>) && isa(s.args[2], Symbol)
-                str = string(Core.eval(__module__, s.args[3]))
-                s = s.args[2]
+            elseif (s.head == :(=>)) && 
+               length(s.args) == 2 && isa(s.args[1], Symbol)
+               str = string(Core.eval(__module__, s.args[2]))
+               s = s.args[1]
             else
-                throw(ArgumentError(string("invalid expr for Enum ", typename, ": ", s)))
+                throw(ArgumentError(string("invalid argument for Enum ", typename, ": ", s)))
             end
         elseif s isa String
             str = s
@@ -223,7 +228,8 @@ end
 # backward compatibility
 @eval $(Symbol("@superenum")) = $(Symbol("@se"))
 
-export Enum, @se, @superenum
+export Enum, @se
+export @superenum
 
 end #module
 

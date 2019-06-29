@@ -7,7 +7,7 @@
 ## Usage
 
 ```julia
-@superenum Vehical plane train car truck
+@se Vehical plane train car truck
 
 julia> Vehical.VehicalEnum
 Enum Main.Vehical.VehicalEnum:
@@ -18,4 +18,10 @@ truck = 3
 
 julia> Vehical.car
 car::VehicalEnum = 2
+
+julia> @se Lang zh=>"中文"*"Chinese" en=>"English" ja=>"日本语"
+Main.Lang
+
+julia> string(Lang.zh)
+"中文Chinese"
 ```
