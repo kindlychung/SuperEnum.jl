@@ -1,7 +1,7 @@
 name = "SuperEnum"
 uuid = "5c958174-e7d9-5990-9618-4567de4ba542"
 authors = ["Kaiyin Zhong <kindlychung@gmail.com>"]
-version = "0.1.6"
+version = "0.1.4"
 
 [compat]
 julia = "1.0"
