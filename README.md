@@ -24,4 +24,7 @@ Main.Lang
 
 julia> string(Lang.zh)
 "中文Chinese"
+
+julia> Lang.fromstr("中文Chinese") == Lang.zh
+true
 ```
