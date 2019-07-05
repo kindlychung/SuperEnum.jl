@@ -1,5 +1,6 @@
 module SuperEnum
 
+__version__ = "0.1.5"
 
 import Core.Intrinsics.bitcast
 
@@ -170,6 +171,14 @@ macro se(T, syms...)
                     return str
                 end
             end
+        end
+        function $(esc(:fromstr))(s::AbstractString)
+            for (sym, i, str) in $vals
+                if str == s
+                    return $(esc(typename))(i)
+                end
+            end
+            return nothing
         end
         function Base.print(io::IO, x::$(esc(typename)))
             for (sym, i, str) in $vals
