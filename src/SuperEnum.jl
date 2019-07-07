@@ -162,8 +162,8 @@ macro se(T, syms...)
         Base.typemin(x::Type{$(esc(typename))}) = $(esc(typename))($lo)
         Base.typemax(x::Type{$(esc(typename))}) = $(esc(typename))($hi)
         Base.isless(x::$(esc(typename)), y::$(esc(typename))) = isless($basetype(x), $basetype(y))
-        import Base: ==
-        ==(x::$(esc(typename)), y::$(esc(typename))) = ($basetype(x) == $basetype(y))
+        import Base: == 
+        $(esc(:(==)))(x::$(esc(typename)), y::$(esc(typename))) = ($basetype(x) == $basetype(y))
         let insts = ntuple(i->$(esc(typename))($values[i]), $(length(values)))
             Base.instances(::Type{$(esc(typename))}) = insts
         end
