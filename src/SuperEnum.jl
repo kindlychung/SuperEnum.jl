@@ -179,6 +179,14 @@ macro se(T, syms...)
                 end
             end
         end
+        function $(esc(:fromstr))(s::AbstractString)
+            for (sym, i, str) in $vals
+                if str == s
+                    return $(esc(typename))(i)
+                end
+            end
+            return nothing
+        end
         function $(esc(:getattributes))(x::$(esc(typename)))
            for (sym, i, str) in $vals
                 if i == $(basetype)(x)
