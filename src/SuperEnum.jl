@@ -1,6 +1,6 @@
 module SuperEnum
 
-__version__ = "0.1.5"
+__version__ = "0.1.6"
 
 import Core.Intrinsics.bitcast
 
@@ -30,7 +30,7 @@ end
 """
     @se EnumName[::BaseType] value1[=x] value2[=y]
     @se EnumName[::BaseType] value1[=>string1] value2[=>string2]
-
+	
 Create an `Enum{BaseType}` subtype with name `EnumName` and enum member values of
 `value1` and `value2` with optional assigned values of `x` and `y`, respectively,
 or with `type=>description` pairs.
@@ -60,6 +60,14 @@ Enum Main.Lang.LangEnum:
 zh = 0
 en = 1
 ja = 2
+julia>SuperEnum.@se Team Barcelona=>(country="Spain", revenue=840.8)  RealMadrid=>(id=3,country="Spain", revenue=757.3) ManchesterUnited=>(country="England", revenue=711.5)
+julia>string(Team.Barcelona).revenue
+840.8
+julia>Team.TeamEnum
+Enum Main.Team.TeamEnum:
+Barcelona = 0
+RealMadrid = 3
+ManchesterUnited = 4
 ```
 
 Values can also be specified inside a `begin` block, e.g.
@@ -97,7 +105,7 @@ macro se(T, syms...)
     elseif !isa(T, Symbol)
         throw(ArgumentError("invalid type expression for enum $T"))
     end
-    vals = Vector{Tuple{Symbol,Integer,String}}()
+    vals = Vector{Tuple{Symbol,Integer,Any}}()
     lo = hi = 0
     i = zero(basetype)
     str = ""
@@ -125,8 +133,13 @@ macro se(T, syms...)
                 str = string(s)
                 hasexpr = true
             elseif (s.head == :call) && length(s.args) == 3 && s.args[1] == :(=>) && isa(s.args[2], Symbol)
-                str = string(Core.eval(__module__, s.args[3]))
+                str = Core.eval(__module__, s.args[3])
                 s = s.args[2]
+
+                #See if id is defined
+                if :id in keys(str)
+                    i = str.id
+                end
             else
                 throw(ArgumentError(string("invalid expr for Enum ", typename, ": ", s)))
             end
@@ -182,6 +195,14 @@ macro se(T, syms...)
             end
             return nothing
         end
+        function $(esc(:getattributes))(x::$(esc(typename)))
+           for (sym, i, str) in $vals
+                if i == $(basetype)(x)
+                    return str
+                end
+            end
+            return nothing
+        end
         function Base.print(io::IO, x::$(esc(typename)))
             for (sym, i, str) in $vals
                 if i == $(basetype)(x)
@@ -208,7 +229,7 @@ macro se(T, syms...)
                 show(io, i)
             end
         end
-        end
+    end
     end
     for node in blk.args
         if node isa LineNumberNode
@@ -237,4 +258,3 @@ end
 export Enum, @se, @superenum
 
 end #module
-
