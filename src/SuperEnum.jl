@@ -60,6 +60,14 @@ Enum Main.Lang.LangEnum:
 zh = 0
 en = 1
 ja = 2
+julia>SuperEnum.@se Team Barcelona=>(country="Spain", revenue=840.8)  RealMadrid=>(id=3,country="Spain", revenue=757.3) ManchesterUnited=>(country="England", revenue=711.5)
+julia>string(Team.Barcelona).revenue
+840.8
+julia>Team.TeamEnum
+Enum Main.Team.TeamEnum:
+Barcelona = 0
+RealMadrid = 3
+ManchesterUnited = 4
 ```
 
 Values can also be specified inside a `begin` block, e.g.
