@@ -1,0 +1,16 @@
+# Documentation: http://docs.travis-ci.com/user/languages/julia
+language: julia
+notifications:
+  email: false
+julia:
+  - 1.0
+  - 1
+  - nightly
+os:
+  - linux
+arch:
+  - x64
+jobs:
+  fast_finish: true
+  allow_failures:
+    - julia: nightly

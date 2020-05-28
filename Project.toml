@@ -1,10 +1,13 @@
 name = "SuperEnum"
 uuid = "5c958174-e7d9-5990-9618-4567de4ba542"
 authors = ["Kaiyin Zhong <kindlychung@gmail.com>"]
-version = "0.1.5"
+version = "0.1.6"
 
 [compat]
 julia = "1.0"
 
-[deps]
+[extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]
