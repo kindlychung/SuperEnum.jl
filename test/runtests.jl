@@ -18,6 +18,8 @@ eval(expr)
 @test string(Lang.ja) ==  "日本语"
 @test Lang.fromstr("中文Chinese") == Lang.zh
 
+@se WithSuper::Int64 a b c
+@test supertype(WithSuper.WithSuperEnum) === SuperEnum.Enum{Int64}
 
 
 end

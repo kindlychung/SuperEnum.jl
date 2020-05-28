@@ -34,7 +34,7 @@ end
 Create an `Enum{BaseType}` subtype with name `EnumName` and enum member values of
 `value1` and `value2` with optional assigned values of `x` and `y`, respectively,
 or with `type=>description` pairs.
-`EnumName` will be defined as `EnumName.EnumNameEnum`, where `EnumName` is a module, and `EnumNameEnum` is the type. 
+`EnumName` will be defined as `EnumName.EnumNameEnum`, where `EnumName` is a module, and `EnumNameEnum` is the type.
 This type can be used just like other types and enum member values as regular values.
 
 # Examples
@@ -86,17 +86,17 @@ macro se(T, syms...)
 
     basetype = Int32
     modname = T
-    typename = Symbol(modname, "Enum")
     # allow T to be an expr like Car::Int64
     if isa(T, Expr) && T.head == :(::) && length(T.args) == 2 && isa(T.args[1], Symbol)
-        typename = T.args[1]
+        modname = T.args[1]
         basetype = Core.eval(__module__, T.args[2])
         if !isa(basetype, DataType) || !(basetype <: Integer) || !isbitstype(basetype)
-            throw(ArgumentError("invalid base type for Enum $typename, $T=::$basetype; base type must be an integer primitive type"))
+            throw(ArgumentError("invalid base type for Enum $modname, $T=::$basetype; base type must be an integer primitive type"))
         end
     elseif !isa(T, Symbol)
         throw(ArgumentError("invalid type expression for enum $T"))
     end
+    typename = Symbol(modname, "Enum")
     vals = Vector{Tuple{Symbol,Integer,String}}()
     lo = hi = 0
     i = zero(basetype)
@@ -113,7 +113,7 @@ macro se(T, syms...)
                 throw(ArgumentError("overflow in value \"$s\" of Enum $typename"))
             end
             str = string(s)
-        elseif isa(s, Expr) 
+        elseif isa(s, Expr)
             if (s.head == :(=) || s.head == :kw) &&
                length(s.args) == 2 && isa(s.args[1], Symbol)
                 i = Core.eval(__module__, s.args[2]) # allow exprs, e.g. uint128"1"
@@ -151,7 +151,7 @@ macro se(T, syms...)
     end
     blk = quote
         module $(esc(modname))
-        ## 
+        ##
         # Base.@__doc__(primitive type $(esc(typename)) <: Enum{$(basetype)} $(sizeof(basetype) * 8) end)
         primitive type $(esc(typename)) <: Enum{$(basetype)} $(sizeof(basetype) * 8) end
         function $(esc(typename))(x::Integer)
@@ -162,7 +162,7 @@ macro se(T, syms...)
         Base.typemin(x::Type{$(esc(typename))}) = $(esc(typename))($lo)
         Base.typemax(x::Type{$(esc(typename))}) = $(esc(typename))($hi)
         Base.isless(x::$(esc(typename)), y::$(esc(typename))) = isless($basetype(x), $basetype(y))
-        import Base: == 
+        import Base: ==
         $(esc(:(==)))(x::$(esc(typename)), y::$(esc(typename))) = ($basetype(x) == $basetype(y))
         let insts = ntuple(i->$(esc(typename))($values[i]), $(length(values)))
             Base.instances(::Type{$(esc(typename))}) = insts
@@ -237,4 +237,3 @@ end
 export Enum, @se, @superenum
 
 end #module
-
